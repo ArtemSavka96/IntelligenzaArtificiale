@@ -1,0 +1,17 @@
+%Destra
+neighbour(X1,Y1,X1,Y2,C):-cell(X1,Y1,C,S), cell(X1,Y2,C,S), Y2=Y1+1.
+
+%Sinistra
+neighbour(X1,Y1,X1,Y2,C):-cell(X1,Y1,C,S), cell(X1,Y2,C,S),Y2=Y1-1, Y1>0.
+
+%Giù
+neighbour(X1,Y1,X2,Y1,C):-cell(X1,Y1,C,S), cell(X2,Y1,C,S), X2=X1+1.
+
+%Su
+neighbour(X1,Y1,X2,Y1,C):-cell(X1,Y1,C,S), cell(X2,Y1,C,S), X2=X1-1, X1>0.
+
+
+%Le 3 seguenti regole servono per produrre le istanze di Hint, una mossa consigliata
+path(X,Y,C,N):- cell(X,Y,C,S), #count{X1,Y1:neighbour(X,Y,X1,Y1,C), cell(X1,Y1,C,S)}=N.
+bestColor(C,N) :- path(X,Y,C,N2), #max{M: path(X,Y,C,M)}=N, N-N2=0.
+bestMove(C) :- bestColor(C,N1), #max{N: bestColor(C1,N)}=M, M-N1=0.
